@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sleep Cycle Tip — Sleep Time Calculator</title>
+<style>body{font-family:system-ui,sans-serif;max-width:40rem;margin:2rem auto;padding:0 1rem;line-height:1.5}
+label,input,button{display:block;margin:.5rem 0}input{padding:.4rem;width:100%;max-width:12rem}
+.card{border:1px solid #ddd;border-radius:8px;padding:1rem;margin-top:1rem}a.cta{display:inline-block;margin-top:1rem;background:#2563eb;color:#fff;padding:.6rem 1rem;border-radius:6px;text-decoration:none}</style></head>
+<body>
+<h1>Sleep cycle tip</h1>
+<p>Pick a wake-up time. This page suggests bedtimes in 90-minute steps (local math only).</p>
+<label>Wake-up time <input id="wake" type="time" value="07:00"></label>
+<button id="go">Suggest bedtimes</button>
+<div class="card" id="out"></div>
+<p><a class="cta" href="https://calculatorsleeptime.com/">Open Sleep Time Calculator</a></p>
+<script>
+const CYCLE=90,FALL=14;
+document.getElementById('go').onclick=()=>{
+  const [h,m]=document.getElementById('wake').value.split(':').map(Number);
+  let mins=h*60+m;
+  const lines=[];
+  for(let c=6;c>=3;c--){
+    let b=mins-FALL-c*CYCLE; while(b<0)b+=24*60;
+    const hh=String(Math.floor(b/60)%24).padStart(2,'0'), mm=String(b%60).padStart(2,'0');
+    lines.push(`${c} cycles → bedtime about ${hh}:${mm}`);
+  }
+  document.getElementById('out').innerHTML='<ul>'+lines.map(x=>'<li>'+x+'</li>').join('')+'</ul><p>For the full tool, visit the site.</p>';
+};
+</script></body></html>
